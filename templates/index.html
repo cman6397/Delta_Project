@@ -21,18 +21,17 @@ input[type=text], input[type=password] {
     top: 50%;
     left: 50%;
     width:400px;
-    margin-left: -200px; /* margin is -0.5 * dimension */
+    margin-left: -200px; 
     margin-top: -150px; 
 }
 
 button {
-	background-color: #008CBA; /* Green */
+	background-color: #008CBA;
     border-radius: 10px;
     color: white;
     cursor: pointer;
-    padding: 15px 32px;
+    padding: 12px 32px;
 }
-
 
 </style>
 
@@ -44,22 +43,15 @@ button {
  
 <body>
  
-
 <div class = "center">
-
-	<form action="action_page.php" style="border:1px solid #ccc">
-  		<div class="container">
-    	<h1>Delta Billing Sign In </h1>
-
-    	<input type="text" placeholder="Enter Login" name="login" required> <br>
-	
-    	<input type="password" placeholder="Enter Password" name="psw" required> <br>
-
-   		<button type="button">Login</button>
-
-   		</div>
-	</form>
-
+    <div class = "container">
+    <h2> Sign In </h2>
+	<form action="/signup" method="post">
+        <input type="text" placeholder="Enter Login" name="login"> </br>
+        <input type="text" placeholder = "Enter Password" name="password"> </br>
+        <button type="submit" value="Signup"> Login </button>
+    </form>
+    </div>
 </div>
 
 </body>
