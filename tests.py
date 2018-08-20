@@ -1,14 +1,17 @@
 import sqlite3
 from passlib.hash import sha256_crypt
-from form.user import user
+from classes.user import user
+from classes.sql_utils import sql_utils
 import gc
 
 def user_test():
-	conn=sqlite3.connect('data_base\\Billing_Data.db')
+	conn=sql_utils("data_base\\Billing_Data.db")
+	conn.create_connection()
 
 	#remove test user
 	test_user=user('test','password',conn)
-	test_user.remove_user()
+	result=test_user.remove_user()
+	print(result[1])
 
 	#verify user does not exist
 	result=test_user.verify_user()
@@ -48,12 +51,24 @@ def user_test():
 	result=test_user.register_user()
 	assert result[0] is False
 	print(result[1])
+
+	conn.close_connection()
 	
-	conn.close()
-	gc.collect()
-	
+def sql_utils_test():
+	#create, query and close connection with no errors
+	conn=sql_utils("data_base\\Billing_Data.db")
+	conn.create_connection()
+
+	sql_string= 'Select * from users where username= ?'
+	sql_args=('test',)
+
+	result=conn.query_db(sql_string,sql_args)
+
+	conn.close_connection()
+
 
 if __name__ == '__main__':
+	sql_utils_test()
 	user_test()
 
 
