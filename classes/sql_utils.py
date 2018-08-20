@@ -5,17 +5,17 @@ import sqlite3
 import gc
 
 class sql_utils:
-	def __init__ (self,connection_string):
-		self.connection_string=connection_string
+
+	def __init__ (self):
 		self.conn=None
+		self.conn_string='data_base\\Billing_Data.db'
 
 	def create_connection(self):
-		self.conn=sqlite3.connect(self.connection_string)
+		self.conn=sqlite3.connect(self.conn_string)
 
 	def close_connection(self):
 		self.conn.close()
 		self.conn=None
-		self.connection_string=None
 		gc.collect()
 
 	def query_db(self,query, args=()):
