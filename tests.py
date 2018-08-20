@@ -14,9 +14,9 @@ def user_test():
 	print(result[1])
 
 	#verify user does not exist
-	result=test_user.verify_user()
-	assert result[0] is False
-	print(result[1])
+	verification,message=test_user.verify_user()
+	assert verification is False
+	print(message)
 
 	#register user
 	result=test_user.register_user()

@@ -43,6 +43,7 @@ class user:
 			password_encrypt=sha256_crypt.encrypt(self.password)
 			sql_string= ' INSERT INTO users (username,password) Values (?,?) '
 			sql_args=(self.username,password_encrypt)
+			
 			data=self.conn.query_db(sql_string,sql_args)
 			message="User Registered"
 			registered=True

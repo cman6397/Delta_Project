@@ -22,7 +22,7 @@
  
 <body>
 
-<div class = "center">
+
 
 {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -34,6 +34,8 @@
             </div>
     {% endif %}
 {% endwith %}
+
+<div class = "center">
 
 <form action="/login/" method="post">
     <div class="form-group">
