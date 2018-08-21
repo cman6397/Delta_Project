@@ -16,12 +16,8 @@ class users(db.Model):
 	username = db.Column(db.String(50), unique=True, nullable=False)
 	password = db.Column(db.String(120), unique=False, nullable=False)
 
-	def register_user(self):
-		db.sessions.add(self)
-
 	def __repr__(self):
 		return '<users = %r, passwords= %r>' % (self.username, self.password)
-	def register_user 
 
 
 def user_test():
@@ -101,10 +97,14 @@ def sql_utils_test():
 def user_sqlalchemy_test():
 
 	admin = users(username='admin', password='123')
-	db.session.add(admin)
-	db.session.commit()
+	user_query=db.session.query(users).filter(users.username==admin.username).all()
+	if user_query:
+		print("User Taken")
+	else:
+		db.session.add(admin)
 
-	print(users.query.all())
+	#db.session.add(admin)
+	db.session.commit()
 
 if __name__ == '__main__':
 	sql_utils_test()
