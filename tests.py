@@ -1,8 +1,28 @@
-import sqlite3
-from passlib.hash import sha256_crypt
+from flask import Flask, render_template, request, redirect, url_for,flash,session
 from classes.user import user
 from classes.sql_utils import sql_utils
-import gc
+from flask_sqlalchemy import SQLAlchemy
+from functools import wraps
+
+app = Flask(__name__)
+
+app.config['SECRET_KEY']='45968594lkjgnf24958caskcturoty234'
+app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:///data_base/Billing_Data.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db=SQLAlchemy(app)
+
+class users(db.Model):
+	uid = db.Column(db.Integer, primary_key=True)
+	username = db.Column(db.String(50), unique=True, nullable=False)
+	password = db.Column(db.String(120), unique=False, nullable=False)
+
+	def register_user(self):
+		db.sessions.add(self)
+
+	def __repr__(self):
+		return '<users = %r, passwords= %r>' % (self.username, self.password)
+	def register_user 
+
 
 def user_test():
 	#remove test user
@@ -57,9 +77,13 @@ def create_admin_user():
 	conn=sql_utils()
 	conn.create_connection()
 
-	#remove test user
-	test_user=user('admin','1234')
-	result=test_user.register_user()
+	#delete admin user
+	admin=user('admin','1234')
+	result=admin.remove_user()
+	print(result[1])
+
+	#register admin user
+	result=admin.register_user()
 	print(result[1])
 	
 def sql_utils_test():
@@ -74,11 +98,19 @@ def sql_utils_test():
 
 	conn.close_connection()
 
+def user_sqlalchemy_test():
+
+	admin = users(username='admin', password='123')
+	db.session.add(admin)
+	db.session.commit()
+
+	print(users.query.all())
 
 if __name__ == '__main__':
-	create_admin_user()
 	sql_utils_test()
 	user_test()
+	user_sqlalchemy_test()
+	create_admin_user()
 
 
 

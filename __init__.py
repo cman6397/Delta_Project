@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for,flash,session
 from classes.user import user
 from classes.sql_utils import sql_utils
+from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
-import sqlite3
-import gc
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY']='45968594lkjgnf24958caskcturoty234'
 
 def login_required(f):
 	@wraps(f)
@@ -61,5 +62,4 @@ def logout():
 
 
 if __name__ == '__main__':
-	app.secret_key = 'super secret key'
 	app.run(debug=True,threaded=True)
