@@ -3,6 +3,7 @@ from classes.user import user
 from classes.sql_utils import sql_utils
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
+from passlib.hash import sha256_crypt
 
 app = Flask(__name__)
 
@@ -15,6 +16,41 @@ class users(db.Model):
 	uid = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(50), unique=True, nullable=False)
 	password = db.Column(db.String(120), unique=False, nullable=False)
+
+	def register(self):
+		message=""
+		registered=False
+
+		self.password=sha256_crypt.encrypt(self.password)
+
+		user_query=db.session.query(users).filter(users.username==self.username).all()
+		if user_query:
+			message="Username Taken"
+		else:
+			db.session.add(self)
+			message="User Registered"
+			registered=True
+
+		db.session.commit()
+		return(registered,message)
+
+	def remove(self):
+		db.session.query(users).filter(users.username==self.username).delete()
+		message="User Removed"
+		removed=True
+		return(removed,message)
+
+	def verify(self):
+		verified = False
+		message = "Incorrect Username or Password"
+
+		db.session.query(users).filter(users.username==self.username)
+
+		message="User Removed"
+		removed=True
+		return(removed,message)
+
+
 
 	def __repr__(self):
 		return '<users = %r, passwords= %r>' % (self.username, self.password)
@@ -74,7 +110,7 @@ def create_admin_user():
 	conn.create_connection()
 
 	#delete admin user
-	admin=user('admin','1234')
+	admin=user('admin1','1234')
 	result=admin.remove_user()
 	print(result[1])
 
@@ -96,21 +132,28 @@ def sql_utils_test():
 
 def user_sqlalchemy_test():
 
-	admin = users(username='admin', password='123')
-	user_query=db.session.query(users).filter(users.username==admin.username).all()
-	if user_query:
-		print("User Taken")
-	else:
-		db.session.add(admin)
+	admin = users(username='admin', password='1234')
+	result=admin.remove()
+	print(result[1])
+	assert result[0] is True
 
-	#db.session.add(admin)
-	db.session.commit()
+	result=admin.register()
+	print(result[1])
+	assert result[0] is True
+
+	result=admin.register()
+	print(result[1])
+	assert result[0] is False
+
 
 if __name__ == '__main__':
 	sql_utils_test()
 	user_test()
+	print("----------SQLALchemy Custom Methods Test-----------")
 	user_sqlalchemy_test()
+	print("------------Create Admin Test-----------------------")
 	create_admin_user()
+
 
 
 
