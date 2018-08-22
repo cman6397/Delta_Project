@@ -9,7 +9,6 @@ class user:
 
 	def verify_user(self):
 		conn=sql_utils()
-		conn.create_connection()
 
 		verified=False
 		message = "Incorrect Username or Password"
@@ -23,13 +22,14 @@ class user:
 				verified=True
 				message="Login Successful"
 
-		conn.close_connection()
 		return (verified,message)
+
+	def username_password(self):
+		return("Hi")
 
 
 	def remove_user(self):
 		conn=sql_utils()
-		conn.create_connection()
 
 		message="User Removed"
 		removed=True
@@ -38,12 +38,10 @@ class user:
 		sql_args=(self.username,)
 		data=conn.query_db(sql_string,sql_args)
 
-		conn.close_connection()
 		return (removed,message)
 
 	def register_user(self):
 		conn=sql_utils()
-		conn.create_connection()
 
 		message=""
 		registered=False
@@ -63,7 +61,6 @@ class user:
 		else:
 			message = "Username Taken"
 
-		conn.close_connection()
 		return (registered,message)
 
 

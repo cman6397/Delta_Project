@@ -7,6 +7,7 @@ from functools import wraps
 app = Flask(__name__)
 
 app.config['SECRET_KEY']='45968594lkjgnf24958caskcturoty234'
+app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:///data_base/Billing_Data.db'
 
 def login_required(f):
 	@wraps(f)
