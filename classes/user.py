@@ -24,10 +24,6 @@ class user:
 
 		return (verified,message)
 
-	def username_password(self):
-		return("Hi")
-
-
 	def remove_user(self):
 		conn=sql_utils()
 

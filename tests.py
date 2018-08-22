@@ -13,8 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db=SQLAlchemy(app)
 
-from classes.table_classes import users
-
+from classes.table_classes import users,households
 
 def user_test():
 	#remove test user
@@ -95,6 +94,10 @@ def sql_utils_test():
 def user_sqlalchemy_test():
 	print(db.session.query(users).all())
 
+def clear_tables():
+	db.session.query(households).delete()
+	db.session.commit()
+
 
 if __name__ == '__main__':
 	print("----------SQLAlchemy Tables Test")
@@ -105,6 +108,7 @@ if __name__ == '__main__':
 	user_test()
 	print("----------Create Admin User-----------")
 	create_admin_user()
+	#clear_tables()
 
 
 

@@ -8,6 +8,11 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY']='45968594lkjgnf24958caskcturoty234'
 app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:///data_base/Billing_Data.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db=SQLAlchemy(app)
+
+from classes.table_classes import users, households
 
 def login_required(f):
 	@wraps(f)
@@ -44,10 +49,20 @@ def login():
 		
 	return render_template('login_page.html')
 
-@app.route('/dashboard/')
+@app.route('/dashboard/', methods = ['POST','GET'])
 @login_required
 def dashboard():
-	return render_template('dashboard.html')
+	table=db.session.query(households).all()
+	if request.method == 'POST':
+		household=households(name=request.form['household'])
+		#might be better way to do this.  Not Null constraint does not apear to be working.  
+		try:
+			db.session.add(household)
+			db.session.commit()
+		except:
+			db.session().rollback()
+			flash("Household Name Taken") 
+	return render_template('dashboard.html',table=table)
 
 @app.errorhandler(404)
 def page_not_found(e):
