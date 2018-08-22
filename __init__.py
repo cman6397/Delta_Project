@@ -23,7 +23,7 @@ def login_required(f):
 def main():
 	return render_template('login_page.html')
 
-@app.route('/login/', methods = ['POST'])
+@app.route('/login/', methods = ['POST','GET'])
 def login():
 
 	if request.method == 'POST':
@@ -44,6 +44,7 @@ def login():
 	return render_template('login_page.html')
 
 @app.route('/dashboard/')
+@login_required
 def dashboard():
 	return render_template('dashboard.html')
 
@@ -56,9 +57,8 @@ def page_not_found(e):
 def logout():
 	session.clear()
 	flash("You have logged out")
-	gc.collect()
 
-	return redirect (url_for('hello_test'))
+	return redirect (url_for('login'))
 
 
 if __name__ == '__main__':
