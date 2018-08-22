@@ -10,6 +10,11 @@
         transform: translate(-50%,-50%);
         width:60%;
    }  
+   .top_right {
+        position:fixed;
+        right:10px;
+        top:10px;
+   }
 </style>
 
     <meta charset = "utf-8">
@@ -22,6 +27,14 @@
 <head>
  
 <body>
+
+<div class = top_right>
+    <h5>
+
+    <a href="/logout/"> <span class="glyphicon glyphicon-heart"></span> Logout   </a>
+    
+    </h5>
+</div>
 
 <table class="table table-bordered table-striped">
 {% for row in table %}
