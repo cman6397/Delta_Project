@@ -4,11 +4,8 @@
 <head>
 <style>
    .center {
-        position:fixed;
-        top:50%;
-        left:50%;
-        transform: translate(-50%,-50%);
-        width:60%;
+        height: 400px !important;
+        overflow: scroll;
    }  
    .top_right {
         position:fixed;
@@ -63,6 +60,7 @@
     <tr>
         <td>{{row.id}}</td>
         <td>{{row.name}}</td>
+        <td> <a href= {{ '/household/' ~ row.id }}> <span class="glyphicon glyphicon-heart"></span> Edit </a> </td>
     </tr>
 {% endfor %}
 </table>

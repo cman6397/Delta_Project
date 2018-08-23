@@ -64,6 +64,38 @@ def dashboard():
 			flash("Household Name Taken") 
 	return render_template('dashboard.html',table=table)
 
+
+
+@app.route('/household/<int:id>', methods=['GET', 'POST'])
+@login_required
+
+def edit(id):
+	household=db.session.query(households).filter(households.id==id).all()
+
+	if request.method == 'POST':
+		if request.form['household'] != "":
+			new_household=households(name=request.form['household'], id=id)
+			#might be better way to do this.  Not Null constraint does not apear to be working.  
+			try:
+				db.session.query(households).filter(households.id==id).delete()
+				db.session.commit()
+				db.session.add(new_household)
+				db.session.commit()
+				flash("Update Successful")
+				return redirect (url_for('dashboard'))
+			except:
+				db.session().rollback()
+				flash("Update Failed") 
+		else:
+			db.session.query(households).filter(households.id==id).delete()
+			db.session.commit()
+			flash ("Record Deleted")
+			return redirect (url_for('dashboard'))
+
+	return render_template('edit_record.html', methods = ['GET', 'POST'],household=household)
+
+
+
 @app.errorhandler(404)
 def page_not_found(e):
 	return render_template('404_error.html')
