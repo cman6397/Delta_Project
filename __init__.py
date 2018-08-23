@@ -62,6 +62,7 @@ def dashboard():
 		except:
 			db.session().rollback()
 			flash("Household Name Taken") 
+	table=db.session.query(households).all()
 	return render_template('dashboard.html',table=table)
 
 

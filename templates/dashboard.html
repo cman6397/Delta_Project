@@ -25,7 +25,9 @@
 
 <!-- Logout Button -->
 <div class = top_right>
-    <h5> <a href="/logout/"> <span class="glyphicon glyphicon-heart"></span> Logout </a> </h5>
+    <button type="button" class="btn btn-default btn-sm">
+    <a href="/logout/">  <span class="glyphicon glyphicon-log-out"></span> Log out </a>
+    </button>
 </div>
 
 <!-- Add Household Form -->
@@ -42,7 +44,7 @@
 
 {% with messages = get_flashed_messages() %}
     {% if messages %}
-          <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
             <strong> {{ messages[0] }} </strong> 
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
