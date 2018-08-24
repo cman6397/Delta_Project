@@ -53,9 +53,9 @@ def login():
 @login_required
 def dashboard():
 	table=db.session.query(households).all()
-	if request.method == 'POST':
+	if request.method == 'POST' and request.form['household'] != "":
 		household=households(name=request.form['household'])
-		#might be better way to do this.  Not Null constraint does not apear to be working.  
+		#Come back to this for handling input.  
 		try:
 			db.session.add(household)
 			db.session.commit()
@@ -76,7 +76,7 @@ def edit(id):
 	if request.method == 'POST':
 		if request.form['household'] != "":
 			household.name=request.form['household']
-			#Temporary solution to doing this.  Going to flesh out error handling and parameter restraint stuff. Not Null constraint does not apear to be working.  
+			#Come back to this for handling input. 
 			try:
 				db.session.commit()
 				flash("Update Successful")
