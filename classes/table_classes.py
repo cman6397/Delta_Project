@@ -1,4 +1,4 @@
-#from tests import db
+#from tests import db.  Need to add on delete set nulls. 
 from flask_sqlalchemy import SQLAlchemy
 
 db=SQLAlchemy()
@@ -36,8 +36,8 @@ class accounts(db.Model):
 	custodian = db.Column(db.String(100), unique=False, nullable=True)
 	opening_date = db.Column(db.Date(), unique=False, nullable=True)
 	balance=db.Column(db.Numeric(), unique=False, nullable=True)
-	household_id= db.Column(db.Integer, db.ForeignKey('households.id'), nullable=True), ondelete="SET NULL"
-	fee_id= db.Column(db.Integer, db.ForeignKey('fee_structure.id'), nullable=True), ondelete="SET NULL"
+	household_id= db.Column(db.Integer, db.ForeignKey('households.id'), nullable=True)
+	fee_id= db.Column(db.Integer, db.ForeignKey('fee_structure.id'), nullable=True)
 
 
 	def __repr__(self):
