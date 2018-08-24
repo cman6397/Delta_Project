@@ -32,9 +32,9 @@
 
 <div class = "center">
 
-<form action={{ '/household/' ~ household[0].id }} method="post">
+<form action={{ '/household/' ~ household.id }} method="post">
     <div class="form-group">
-        <label for="lg">{{'Household: ' ~ household[0].name}}</label>
+        <label for="lg">{{'Household: ' ~ household.name}}</label>
         <input type="text" class="form-control" placeholder="Enter New Name" name="household" id="lg"> </br>
         <button type="submit" class="btn btn-default">Edit Household</button>
         <br>

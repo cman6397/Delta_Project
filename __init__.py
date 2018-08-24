@@ -71,16 +71,13 @@ def dashboard():
 @login_required
 
 def edit(id):
-	household=db.session.query(households).filter(households.id==id).all()
+	household=db.session.query(households).filter(households.id==id).first()
 
 	if request.method == 'POST':
 		if request.form['household'] != "":
-			new_household=households(name=request.form['household'], id=id)
-			#might be better way to do this.  Not Null constraint does not apear to be working.  
+			household.name=request.form['household']
+			#Temporary solution to doing this.  Going to flesh out error handling and parameter restraint stuff. Not Null constraint does not apear to be working.  
 			try:
-				db.session.query(households).filter(households.id==id).delete()
-				db.session.commit()
-				db.session.add(new_household)
 				db.session.commit()
 				flash("Update Successful")
 				return redirect (url_for('dashboard'))
