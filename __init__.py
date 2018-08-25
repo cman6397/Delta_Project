@@ -12,7 +12,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db=SQLAlchemy(app)
 
-from classes.table_classes import users, households
+from classes.table_classes import users, households, accounts
 
 def login_required(f):
 	@wraps(f)
@@ -65,9 +65,40 @@ def dashboard():
 	table=db.session.query(households).all()
 	return render_template('dashboard.html',table=table)
 
+@app.route('/households/', methods = ['POST','GET'])
+@login_required
+def house_display():
+    table=db.session.query(households).all()
+    if request.method == 'POST' and request.form['household'] != "":
+        household=households(name=request.form['household'])
+        #Come back to this for handling input.  
+        try:
+            db.session.add(household)
+            db.session.commit()
+        except:
+            db.session().rollback()
+            flash("Household Name Taken") 
+    table=db.session.query(households).all()
+    return render_template('households.html',table=table)
+
+@app.route('/accounts/', methods = ['POST','GET'])
+@login_required
+def accounts_display():
+    table=db.session.query(accounts).all()
+    if request.method == 'POST' and request.form['account'] != "":
+        account=accounts(name=request.form['account'],account_number=request.form['account_number'])
+        #Come back to this for handling input.  
+        try:
+            db.session.add(account)
+            db.session.commit()
+        except:
+            db.session().rollback()
+            flash("Account Name Taken") 
+    table=db.session.query(accounts).all()
+    return render_template('accounts.html',table=table)
 
 
-@app.route('/household/<int:id>', methods=['GET', 'POST'])
+@app.route('/households/<int:id>', methods=['GET', 'POST'])
 @login_required
 
 def edit(id):
@@ -92,19 +123,16 @@ def edit(id):
 
 	return render_template('edit_record.html', methods = ['GET', 'POST'],household=household)
 
-
+@app.route("/logout/")
+@login_required
+def logout():
+    session.clear()
+    flash("You have logged out")
+    return redirect (url_for('login'))
 
 @app.errorhandler(404)
 def page_not_found(e):
 	return render_template('404_error.html')
-
-@app.route("/logout/")
-@login_required
-def logout():
-	session.clear()
-	flash("You have logged out")
-
-	return redirect (url_for('login'))
 
 
 if __name__ == '__main__':

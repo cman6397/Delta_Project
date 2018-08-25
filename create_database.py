@@ -44,8 +44,8 @@ class accounts(db.Model):
 	custodian = db.Column(db.String(100), unique=False, nullable=True)
 	opening_date = db.Column(db.Date(), unique=False, nullable=True)
 	balance=db.Column(db.Numeric(), unique=False, nullable=True)
-	household_id= db.Column(db.Integer, db.ForeignKey('households.id'), nullable=True)
-	fee_id= db.Column(db.Integer, db.ForeignKey('fee_structure.id'), nullable=True)
+	household_id= db.Column(db.Integer, db.ForeignKey('households.id', ondelete = 'SET NULL'), nullable=True)
+	fee_id= db.Column(db.Integer, db.ForeignKey('fee_structure.id', ondelete= 'SET NULL'), nullable=True)
 
 
 	def __repr__(self):
