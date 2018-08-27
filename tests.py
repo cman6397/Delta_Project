@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for,flash,session
 from classes.user import user
 from classes.sql_utils import sql_utils
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, inspect
 from functools import wraps
 from passlib.hash import sha256_crypt
 
@@ -13,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db=SQLAlchemy(app)
 
-from classes.table_classes import users,households
+from classes.table_classes import users,households,accounts
 
 def user_test():
 	#remove test user
@@ -92,22 +92,27 @@ def sql_utils_test():
 	result=conn.query_db(sql_string,sql_args)
 
 def user_sqlalchemy_test():
-	print(db.session.query(users).all())
+	#Dynamic table referencing coming soon
+	user_table = db.session.query(users).all()
+	for row in user_table:
+		print(row.c,type(row))
 
 def clear_tables():
 	db.session.query(households).delete()
 	db.session.commit()
 
 
+
+
 if __name__ == '__main__':
 	print("----------SQLAlchemy Tables Test")
 	user_sqlalchemy_test()
-	print("----------SQL_Utils Class Testing-----------")
-	sql_utils_test()
-	print("----------User Class Testing-----------")
-	user_test()
-	print("----------Create Admin User-----------")
-	create_admin_user()
+	#print("----------SQL_Utils Class Testing-----------")
+	#sql_utils_test()
+	#print("----------User Class Testing-----------")
+	#user_test()
+	#print("----------Create Admin User-----------")
+	#create_admin_user()
 	#clear_tables()
 
 

@@ -30,9 +30,10 @@
 <table class="table table-bordered table-striped">
 {% for row in table %}
     <tr>
-        <td>{{row.name}}</td>
-        <td>{{row.account_number}}</td>
-        <td> <a href= {{ '/households/' ~ row.id }}> <span class="glyphicon glyphicon-heart"></span> Edit </a> </td>
+    {% for col in attrs %}
+        <td>{{ row|attr(col) }}</td>
+    {% endfor %}
+    <td> <a href= {{ '/households/' ~ row.id }}> <span class="glyphicon glyphicon-heart"></span> Edit </a> </td>
     </tr>
 {% endfor %}
 </table>

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for,flash,session
 from classes.user import user
 from classes.sql_utils import sql_utils
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, inspect
 from functools import wraps
 
 app = Flask(__name__)
@@ -85,6 +85,7 @@ def house_display():
 @login_required
 def accounts_display():
     table=db.session.query(accounts).all()
+    attrs= inspect(accounts).attrs.keys()
     if request.method == 'POST' and request.form['account'] != "":
         account=accounts(name=request.form['account'],account_number=request.form['account_number'])
         #Come back to this for handling input.  
@@ -95,7 +96,7 @@ def accounts_display():
             db.session().rollback()
             flash("Account Name Taken") 
     table=db.session.query(accounts).all()
-    return render_template('accounts.html',table=table)
+    return render_template('accounts.html',table=table, attrs=attrs)
 
 
 @app.route('/households/<int:id>', methods=['GET', 'POST'])
@@ -119,7 +120,7 @@ def edit(id):
 			db.session.query(households).filter(households.id==id).delete()
 			db.session.commit()
 			flash ("Record Deleted")
-			return redirect (url_for('dashboard'))
+			return redirect (url_for('house_display'))
 
 	return render_template('edit_record.html', methods = ['GET', 'POST'],household=household)
 
