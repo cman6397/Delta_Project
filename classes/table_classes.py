@@ -9,7 +9,7 @@ class users(db.Model):
 	password = db.Column(db.String(100), unique=False, nullable=False)
 
 	def __repr__(self):
-		return '<users = %r, passwords= %r>' % (self.username, self.password)
+		return '<username = %r, password= %r>' % (self.username, self.password)
 
 class households(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -41,4 +41,4 @@ class accounts(db.Model):
 
 
 	def __repr__(self):
-		return '<name = %r, account_number= %r>' % (self.name, self.account_number)
+		return '<id = %r, name = %r, account_number= %r>' % (self.id, self.name, self.account_number)

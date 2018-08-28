@@ -24,16 +24,15 @@
     {% endif %}
 {% endwith %}
 
-<!-- Household Table -->
+<!-- Accounts Table -->
 <div class = "center">
 <div class="table-wrapper-scroll-y">
 <table class="table table-bordered table-striped">
 {% for row in table %}
     <tr>
-    {% for col in attrs %}
-        <td>{{ row|attr(col) }}</td>
-    {% endfor %}
-    <td> <a href= {{ '/households/' ~ row.id }}> <span class="glyphicon glyphicon-heart"></span> Edit </a> </td>
+        <td>{{ row.name }}</td>
+        <td>{{ row.account_number }} </td>
+        <td> <a href= {{ '/accounts/' ~ row.id }}> <span class="glyphicon glyphicon-heart"></span> Edit </a> </td>
     </tr>
 {% endfor %}
 </table>

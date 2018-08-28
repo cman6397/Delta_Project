@@ -84,7 +84,7 @@ def sql_utils_test():
 	conn=sql_utils()
 
 	result=conn.show_schema()
-	print(result)
+	pprint(result)
 
 	sql_string= 'Select * from users where username= ?'
 	sql_args=('admin',)
@@ -93,9 +93,9 @@ def sql_utils_test():
 
 def user_sqlalchemy_test():
 	#Dynamic table referencing coming soon
-	user_table = db.session.query(users).all()
-	for row in user_table:
-		print(row.c,type(row))
+	table=db.session.query(accounts).all()
+	for row in table:
+		print(vars(row).keys())
 
 def clear_tables():
 	db.session.query(households).delete()

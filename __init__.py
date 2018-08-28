@@ -85,7 +85,6 @@ def house_display():
 @login_required
 def accounts_display():
     table=db.session.query(accounts).all()
-    attrs= inspect(accounts).attrs.keys()
     if request.method == 'POST' and request.form['account'] != "":
         account=accounts(name=request.form['account'],account_number=request.form['account_number'])
         #Come back to this for handling input.  
@@ -96,13 +95,13 @@ def accounts_display():
             db.session().rollback()
             flash("Account Name Taken") 
     table=db.session.query(accounts).all()
-    return render_template('accounts.html',table=table, attrs=attrs)
+    return render_template('accounts.html',table=table)
 
 
 @app.route('/households/<int:id>', methods=['GET', 'POST'])
 @login_required
 
-def edit(id):
+def edit_households(id):
 	household=db.session.query(households).filter(households.id==id).first()
 
 	if request.method == 'POST':
@@ -112,7 +111,7 @@ def edit(id):
 			try:
 				db.session.commit()
 				flash("Update Successful")
-				return redirect (url_for('dashboard'))
+				return redirect (url_for('accounts_display'))
 			except:
 				db.session().rollback()
 				flash("Update Failed") 
@@ -123,6 +122,32 @@ def edit(id):
 			return redirect (url_for('house_display'))
 
 	return render_template('edit_record.html', methods = ['GET', 'POST'],household=household)
+
+@app.route('/accounts/<int:id>', methods=['GET', 'POST'])
+@login_required
+
+def edit_accounts(id):
+	account=db.session.query(accounts).filter(accounts.id==id).first()
+
+	if request.method == 'POST':
+		if request.form['account'] != "" and request.form['account_number'] != "":
+			account.name=request.form['account']
+			account.account_number=request.form['account_number']
+			#Come back to this for handling input. 
+			try:
+				db.session.commit()
+				flash("Update Successful")
+				return redirect (url_for('accounts_display'))
+			except:
+				db.session().rollback()
+				flash("Update Failed") 
+		else:
+			db.session.query(accounts).filter(accounts.id==id).delete()
+			db.session.commit()
+			flash ("Record Deleted")
+			return redirect (url_for('accounts_display'))
+
+	return render_template('edit_account.html', methods = ['GET', 'POST'],account=account)
 
 @app.route("/logout/")
 @login_required
